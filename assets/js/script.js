@@ -1,24 +1,17 @@
 const closeModal = () => {
-
     const modal = document.getElementById('modal');
     document.body.classList.remove('no-scroll');
-    modal.classList.remove('show-modal');
-    
+    modal.classList.remove('show-modal');  
 }
 
 const openMobileMenu = () => {
     const mobileMenu = document.getElementById('nav-container');
     mobileMenu.classList.toggle('mobile-show');
-
 }
 
 window.onload = () => {
 
     let itemsInMenu = '';
-
-    const getItems = (items) => {
-        itemsInMenu = items;
-    }
 
     const showModal=(e, itemsInMenu)=> {
         const modal = document.getElementById('modal');
@@ -31,7 +24,7 @@ window.onload = () => {
         const modalContainer = `        <div class="modal-container">
         <div class="modal-window">
             <h3 class="modal-window_title">${itemsInMenu[food].MenuItems[foodItem].Name}</h3>
-            <p class="modal-window_price">$ ${itemsInMenu[food].MenuItems[foodItem].Price}</p>
+            <p class="modal-window_price">$ ${itemsInMenu[food].MenuItems[foodItem].Price.toFixed(2)}</p>
             <form action="">
                 <select name="qty">
                     <option value="1">1</option>
@@ -90,11 +83,8 @@ window.onload = () => {
                 ${menuItem}
             </div>` 
         })
-        
-   
         sectionMenu.innerHTML=menuContent;
     }
-
 
     try {
         fetch("https://api.npoint.io/5f458ccb947908d10993", {
@@ -107,18 +97,17 @@ window.onload = () => {
             let navSections = data.MenuSections.map((e)=>{
                 return e.Name;
             });
-            var menuItems = data.MenuSections;
+            itemsInMenu = data.MenuSections;
 
             setNavMenu(navSections);
-            setMenuSection(menuItems);
-            getItems(menuItems)
+            setMenuSection(itemsInMenu);
 
         })
         .then(()=>{
             const itemElement = document.getElementsByClassName('menu-section_item');
             for(item of itemElement){
                 item.addEventListener('click', function(e){
-                    showModal(e, itemsInMenu)
+                    showModal(e, itemsInMenu);
                 })
             }
             
